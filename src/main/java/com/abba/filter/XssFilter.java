@@ -15,12 +15,13 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*",filterName = "XssFilter")
 public class XssFilter implements Filter {
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("filter do................................");
+        //System.out.println("filter do................................");
         HttpServletRequest servletRequeset = (HttpServletRequest) request;
-        System.out.println(servletRequeset.getContextPath());
-        System.out.println(servletRequeset.getServletPath());
-        System.out.println(servletRequeset.getPathInfo());
+        //System.out.println(servletRequeset.getContextPath());
+        //System.out.println(servletRequeset.getServletPath());
+        //System.out.println(servletRequeset.getPathInfo());
         chain.doFilter(request,response);
     }
 }

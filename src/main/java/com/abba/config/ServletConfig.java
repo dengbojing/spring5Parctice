@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 public class ServletConfig implements WebMvcConfigurer {
 
+    @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/view/");
@@ -25,11 +26,13 @@ public class ServletConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("*.css").addResourceLocations("/css/css/");
-        registry.addResourceHandler("*.html").addResourceLocations("/");
+        //registry.addResourceHandler("*.css").addResourceLocations("/resource/css/");
+        registry.addResourceHandler("*.js").addResourceLocations("/resource/js/");
     }
 
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/","/index");
     }
