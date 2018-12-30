@@ -28,7 +28,6 @@ public class ServletConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //registry.addResourceHandler("*.css").addResourceLocations("/resource/css/");
         registry.addResourceHandler("*.js").addResourceLocations("/resource/js/");
     }
 

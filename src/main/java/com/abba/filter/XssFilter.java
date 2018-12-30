@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author dengbojing
  */
-@WebFilter(urlPatterns = "/*",filterName = "XssFilter")
+@WebFilter(urlPatterns = "/*",filterName = "XssFilter",asyncSupported = true)
 public class XssFilter implements Filter {
 
     @Override

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class AnnotationsBasedApplicationAndServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-       return new Class[]{RootConfig.class};
+       return new Class[]{RootConfig.class,RouterConfig.class};
     }
 
     @Override

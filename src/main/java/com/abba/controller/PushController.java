@@ -3,10 +3,12 @@ package com.abba.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.PushBuilder;
 
+/**
+ * @author dengbojing
+ */
 @Controller
 public class PushController {
 
@@ -18,10 +20,4 @@ public class PushController {
         return "message";
     }
 
-    @RequestMapping("/talk")
-    @ResponseBody
-    public String talk(String message){
-        System.out.println("msg:"+message);
-        return "weqew";
-    }
 }

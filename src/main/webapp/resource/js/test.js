@@ -1,3 +1,1 @@
-document.ready = function(callback){
-    alert(1);
-}
+alert(11223211);

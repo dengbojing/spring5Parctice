@@ -14,5 +14,5 @@
 <body>
 
 </body>
-<script type="text/javascript" src="/resource/js/test.js"/>
+<script type="text/javascript" src="test.js"/>
 </html>
