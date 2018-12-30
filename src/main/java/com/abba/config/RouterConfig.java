@@ -21,6 +21,12 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 @EnableWebFlux
 public class RouterConfig {
 
+    //TODO
+    /**
+     * 未完成
+     * @param userHandler
+     * @return
+     */
     @Bean
     @Resource
     public RouterFunction<ServerResponse> routerFunction(final UserHandler userHandler) {
