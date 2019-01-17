@@ -6,6 +6,6 @@ package com.abba.exception;
 public class ResourceNotFoundException extends Throwable{
     @Override
     public String getMessage(){
-        return "";
+        return "data not found";
     }
 }

@@ -1,46 +1,41 @@
 package com.abba.service;
 
-import com.abba.exception.ResourceNotFoundException;
 import com.abba.model.User;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 /**
  * @author dengbojing
  */
 
 @Service
-public class UserService {
+@Slf4j
+public class UserService{
 
-    private final Map<String, User> data = new ConcurrentHashMap<>();
+    @Autowired
+    BaseDAO<User> dao;
 
-    {
-        data.put("1", User.builder().id("1").name("dengbojing").gender("man").build());
-    }
-
-    public Flux<User> list() {
-        return Flux.fromIterable(this.data.values());
-    }
-
-    public Flux<User> getById(final Flux<String> ids) {
-        return ids.flatMap(id -> Mono.justOrEmpty(this.data.get(id)));
-    }
-
-    public Mono<User> getById(final String id) {
-        return Mono.justOrEmpty(this.data.get(id))
-                .switchIfEmpty(Mono.error(new ResourceNotFoundException()));
-    }
-
-    public Mono<User> createOrUpdate(final User user) {
-        this.data.put(user.getId(), user);
-        return Mono.just(user);
-    }
-
-    public Mono<User> delete(final String id) {
-        return Mono.justOrEmpty(this.data.remove(id));
+    @Transactional
+    public User queryByName(String name) {
+        Session session = dao.getSession();
+        User user = null;
+        try {
+            Query query = session.createQuery("from User where userName = ?1");
+            query.setParameter(1, name);
+            List<User> list = query.list();
+            if (list.size() > 0) {
+                user = list.get(0);
+            }
+        } catch (HibernateException e) {
+            log.error("加载出错！",e);
+        }
+        return user;
     }
 }
