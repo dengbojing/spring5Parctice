@@ -55,7 +55,6 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProperties.setProperty("hibernate.show_sql","true");
-        hibernateProperties.setProperty("hibernate.current_session_context_class","thread");
         hibernateProperties.setProperty("hibernate.format_sql","true");
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache","true");
         hibernateProperties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");

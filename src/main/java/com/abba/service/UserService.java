@@ -22,7 +22,6 @@ public class UserService{
     @Autowired
     BaseDAO<User> dao;
 
-    @Transactional
     public User queryByName(String name) {
         Session session = dao.getSession();
         Query<User> query = session.createQuery("from User where userName = ?1",User.class);
