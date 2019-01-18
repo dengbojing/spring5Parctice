@@ -25,17 +25,8 @@ public class UserService{
     @Transactional
     public User queryByName(String name) {
         Session session = dao.getSession();
-        User user = null;
-        try {
-            Query query = session.createQuery("from User where userName = ?1");
-            query.setParameter(1, name);
-            List<User> list = query.list();
-            if (list.size() > 0) {
-                user = list.get(0);
-            }
-        } catch (HibernateException e) {
-            log.error("加载出错！",e);
-        }
-        return user;
+        Query<User> query = session.createQuery("from User where userName = ?1",User.class);
+        query.setCacheable(true).setParameter(1, name);
+        return query.getSingleResult();
     }
 }
