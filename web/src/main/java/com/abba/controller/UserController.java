@@ -28,9 +28,7 @@ public class UserController {
 
     @GetMapping("{name}")
     public BaseResponse<User> getUser(@PathVariable String name){
-        log.info(name);
         User user = userService.queryByName(name).orElse(new User());
-        log.info(user.toString());
         return BaseResponse.<User>builder().build().success("success", user);
     }
 

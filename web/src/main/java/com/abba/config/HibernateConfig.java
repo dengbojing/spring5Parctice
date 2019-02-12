@@ -21,23 +21,21 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"com.abba.dao"})
-@PropertySource("classpath:hibernate.yml")
+@PropertySource({"classpath:hibernate.properties","classpath:db.properties"})
 public class HibernateConfig {
+
     private Environment env;
 
     @Autowired
-    HibernateConfig(final  Environment env){
+    HibernateConfig(final Environment env){
         this.env = env;
-        System.out.println(env.getProperty("hibernate.hbm2ddl.auto"));
     }
-
-
 
     @Bean
     public DataSource hikaricpDataSource(){
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setMaximumPoolSize(100);
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl( "jdbc:mysql://49.4.71.128:3306/test?autoReconnect=true&useSSL=false");
         dataSource.setUsername( "root");
         dataSource.setPassword( "Qwer!234");
@@ -69,13 +67,13 @@ public class HibernateConfig {
 
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-        hibernateProperties.setProperty("hibernate.show_sql","true");
-        hibernateProperties.setProperty("hibernate.format_sql","true");
-        hibernateProperties.setProperty("hibernate.cache.use_second_level_cache","true");
-        hibernateProperties.setProperty("hibernate.cache.region.factory_class","org.hibernate.cache.ehcache.EhCacheRegionFactory");
-        hibernateProperties.setProperty("hibernate.cache.use_query_cache=true","true");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        hibernateProperties.setProperty("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
+        hibernateProperties.setProperty("hibernate.format_sql",env.getProperty("hibernate.format_sql"));
+        hibernateProperties.setProperty("hibernate.cache.use_second_level_cache",env.getProperty("hibernate.cache.use_second_level_cache"));
+        hibernateProperties.setProperty("hibernate.cache.region.factory_class",env.getProperty("hibernate.cache.region.factory_class"));
+        hibernateProperties.setProperty("hibernate.cache.use_query_cache",env.getProperty("hibernate.cache.use_query_cache"));
         return hibernateProperties;
     }
 

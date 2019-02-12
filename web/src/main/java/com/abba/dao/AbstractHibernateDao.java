@@ -8,19 +8,24 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
 @Slf4j
-@Repository
 public abstract class AbstractHibernateDao<T extends Serializable> {
 
     public Class<T> clazz;
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    protected AbstractHibernateDao(){
+        this.sessionFactory = sessionFactory;
+        this.clazz = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
     /**
      * 创建对象

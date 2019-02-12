@@ -17,12 +17,16 @@ import javax.persistence.NoResultException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResultException.class)
-    public @ResponseBody String noDataFoundException(NoResultException ex){
+    public @ResponseBody String        noDataFoundException(NoResultException ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         return ex.getMessage();
     }
 
     @ExceptionHandler(Exception.class)
     public @ResponseBody String otherException(Exception ex){
+        ex.printStackTrace();
+        log.error(ex.getMessage());
         return ex.getMessage();
     }
 }

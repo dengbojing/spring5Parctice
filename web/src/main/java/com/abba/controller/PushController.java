@@ -16,7 +16,7 @@ public class PushController {
     @RequestMapping("/push")
     public String push( PushBuilder pushBuilder){
         if(null != pushBuilder){
-            pushBuilder.path("resource/js/test.js").push();
+            pushBuilder.path("static/js/test.js").push();
         }
         return "message";
     }

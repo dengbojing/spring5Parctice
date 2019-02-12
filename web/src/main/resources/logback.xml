@@ -52,8 +52,12 @@
         <appender-ref ref="ERROR" />
     </logger>
 
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="OFF" />
+
+
+
     <!-- 日志级别 -->
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 
