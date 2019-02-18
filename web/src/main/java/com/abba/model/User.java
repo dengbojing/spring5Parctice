@@ -14,7 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author dengbojing
@@ -50,4 +52,7 @@ public class User implements Serializable {
     private String userAddress;
     @Column
     private String userGender;
+
+    @Transient
+    private Date birth;
 }

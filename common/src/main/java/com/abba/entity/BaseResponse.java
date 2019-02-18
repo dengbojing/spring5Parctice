@@ -1,6 +1,7 @@
 package com.abba.entity;
 
 
+import com.abba.entity.vo.BaseVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.function.Predicate;
 @Data
 @Builder
 @AllArgsConstructor
-public class BaseResponse<T> {
+public class BaseResponse<T extends BaseVO> {
 
     private Integer status;
 
@@ -27,14 +28,14 @@ public class BaseResponse<T> {
     public BaseResponse<T> success(String message, T t){
         this.status = 200;
         this.message = message;
-        this.data = t;
+        this.data = (T) t.copyProperties();
         return this;
     }
 
     public BaseResponse<T> failure(String message, T t){
         this.status = 500;
         this.message = message;
-        this.data = t;
+        this.data = (T) t.copyProperties();
         return this;
     }
 

@@ -21,8 +21,12 @@ import java.util.Optional;
 @Slf4j
 public class UserService{
 
+    private final IUserDao<User> userDao;
+
     @Autowired
-    IUserDao<User> userDao;
+    public UserService(IUserDao<User> userDao) {
+        this.userDao = userDao;
+    }
 
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public Optional<User> queryByName(String name) {

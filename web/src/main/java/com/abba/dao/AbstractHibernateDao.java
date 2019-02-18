@@ -13,16 +13,19 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
+/**
+ * @author dengbojing
+ * @param <T>
+ */
 @Slf4j
 public abstract class AbstractHibernateDao<T extends Serializable> {
 
-    public Class<T> clazz;
+    private Class<T> clazz;
 
     @Autowired
     private SessionFactory sessionFactory;
 
     protected AbstractHibernateDao(){
-        this.sessionFactory = sessionFactory;
         this.clazz = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
@@ -40,7 +43,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * hql查询
      * @param hql hql语句
      * @param params key: position, value: real-value
-     * @return
+     * @return T --> the query object
      */
     public T hqlQuery(String hql, Map<Integer,Object> params){
         Preconditions.checkNotNull(hql);
@@ -56,7 +59,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * sql查询
      * @param sql sql语句
      * @param params key: position, value: real-value
-     * @return
+     * @return T --> the query object
      */
     public T sqlQuery(String sql, Map<Integer,Object> params){
         Preconditions.checkNotNull(sql);
