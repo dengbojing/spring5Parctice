@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("{name}")
-    public BaseResponse<UserVO> getUser(@PathVariable String name){
+    public BaseResponse<UserVO> getUser(@PathVariable String name) {
         User user = userService.queryByName(name).orElse(User.builder().build());
         Date date = new Date();
         user.setBirth(date);
@@ -38,9 +38,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public BaseResponse<UserVO> createUser(@RequestBody  User user){
+    public BaseResponse<UserVO> createUser(@RequestBody User user) {
         log.info(user.toString());
         userService.createUser(user);
-        return BaseResponse.<UserVO>builder().build().adaptive(userTemp -> StringJudge.isNotEmpty(userTemp.getEntity().getPid()), UserVO.builder().build());
+        return BaseResponse.<UserVO>builder().build().adaptive(userTemp -> StringJudge.isNotEmpty(userTemp.getEntity().getPid()), UserVO.builder().build().setEntity(user));
     }
 }
