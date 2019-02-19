@@ -16,7 +16,7 @@
             <fileNamePattern>${catalina.base}/logs/guide_info.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <MaxFileSize>50MB</MaxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>

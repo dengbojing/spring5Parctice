@@ -28,14 +28,14 @@ public class BaseResponse<T extends BaseVO> {
     public BaseResponse<T> success(String message, T t){
         this.status = 200;
         this.message = message;
-        this.data = (T) t.copyProperties();
+        this.data = t;
         return this;
     }
 
     public BaseResponse<T> failure(String message, T t){
         this.status = 500;
         this.message = message;
-        this.data = (T) t.copyProperties();
+        this.data = t;
         return this;
     }
 
@@ -44,6 +44,14 @@ public class BaseResponse<T extends BaseVO> {
             return success("success",t);
         }else{
             return failure("failure", t);
+        }
+    }
+
+    public BaseResponse<T> adaptive(Predicate<T> predicate, T t,String failMsg, String sucMsg){
+        if(predicate.test(t)){
+            return success(sucMsg,t);
+        }else{
+            return failure(failMsg, t);
         }
     }
 }

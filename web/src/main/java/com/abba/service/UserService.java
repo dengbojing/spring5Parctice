@@ -41,4 +41,10 @@ public class UserService{
         userDao.create(user);
         return Optional.ofNullable(user);
     }
+
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    public Optional<User> updateUser(User user) {
+        //TODO
+        return Optional.of(user);
+    }
 }

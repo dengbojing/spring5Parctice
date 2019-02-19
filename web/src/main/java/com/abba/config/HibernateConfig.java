@@ -34,14 +34,15 @@ public class HibernateConfig {
     @Bean
     public DataSource hikaricpDataSource(){
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setMaximumPoolSize(100);
+        dataSource.setMaximumPoolSize(15);
+        dataSource.setMinimumIdle(5);
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl( "jdbc:mysql://49.4.71.128:3306/test?autoReconnect=true&useSSL=false");
         dataSource.setUsername( "root");
         dataSource.setPassword( "Qwer!234");
         dataSource.setAutoCommit(true);
-        dataSource.setConnectionTimeout(5*1000);
-        dataSource.setIdleTimeout(300*1000);
+        dataSource.setIdleTimeout(740000);
+        dataSource.setMaxLifetime(1740000);
         dataSource.addDataSourceProperty("cachePrepStmts", true);
         dataSource.addDataSourceProperty("prepStmtCacheSize", 250);
         dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
@@ -74,6 +75,7 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache",env.getProperty("hibernate.cache.use_second_level_cache"));
         hibernateProperties.setProperty("hibernate.cache.region.factory_class",env.getProperty("hibernate.cache.region.factory_class"));
         hibernateProperties.setProperty("hibernate.cache.use_query_cache",env.getProperty("hibernate.cache.use_query_cache"));
+        hibernateProperties.setProperty("hibernate.cache.ehcache.missing_cache_strategy",env.getProperty("hibernate.cache.ehcache.missing_cache_strategy"));
         return hibernateProperties;
     }
 

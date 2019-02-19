@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -33,7 +34,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(generator = "userTableGenerator")
-    @GenericGenerator(name = "userTableGenerator", strategy = "uuid")
+    @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
     @Column
     private String pid;
     @Column
@@ -54,5 +55,5 @@ public class User implements Serializable {
     private String userGender;
 
     @Transient
-    private Date birth;
+    private LocalDate birth;
 }

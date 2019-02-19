@@ -23,7 +23,7 @@ public class Company implements Serializable {
 
     @Id
     @GeneratedValue(generator = "userTableGenerator")
-    @GenericGenerator(name = "userTableGenerator", strategy = "uuid")
+    @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
     @Column
     private String pid;
 

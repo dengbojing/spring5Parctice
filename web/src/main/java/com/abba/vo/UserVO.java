@@ -2,22 +2,20 @@ package com.abba.vo;
 
 import com.abba.entity.vo.BaseVO;
 import com.abba.model.User;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
  * @author dengbojing
  */
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true)
 public class UserVO extends BaseVO<User> {
-
-    @Override
-    public UserVO setEntity(User user) {
-        this.entity = user;
-        return this;
+    public UserVO(User user,String...ignoreProperties) {
+        super(user,ignoreProperties);
     }
     private String pid;
     private String userLoginName;
@@ -27,5 +25,6 @@ public class UserVO extends BaseVO<User> {
     private String userEmail;
     private String userAddress;
     private String userGender;
-    private Date birth;
+    private LocalDate birth;
+
 }

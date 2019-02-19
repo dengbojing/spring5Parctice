@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @author dengbojing
@@ -32,15 +33,21 @@ public class UserController {
     @GetMapping("{name}")
     public BaseResponse<UserVO> getUser(@PathVariable String name) {
         User user = userService.queryByName(name).orElse(User.builder().build());
-        Date date = new Date();
-        user.setBirth(date);
-        return BaseResponse.<UserVO>builder().build().success("success", UserVO.builder().build().setEntity(user));
+        return BaseResponse.<UserVO>builder().build().
+                adaptive(voTemp -> StringJudge.isNotEmpty(voTemp.getPid()), new UserVO(user),"没有该用户","success");
     }
 
     @PostMapping("/create")
     public BaseResponse<UserVO> createUser(@RequestBody User user) {
         log.info(user.toString());
         userService.createUser(user);
-        return BaseResponse.<UserVO>builder().build().adaptive(userTemp -> StringJudge.isNotEmpty(userTemp.getEntity().getPid()), UserVO.builder().build().setEntity(user));
+        return BaseResponse.<UserVO>builder().build()
+                .adaptive(voTemp -> StringJudge.isNotEmpty(voTemp.getPid()), new UserVO(user));
+    }
+
+    @PostMapping("/update")
+    public BaseResponse<UserVO> updateUser(@RequestBody User user){
+        Optional<User> optional = userService.updateUser(user);
+        return BaseResponse.<UserVO>builder().build().success("更新成功",new UserVO(optional.orElse(new User())));
     }
 }
