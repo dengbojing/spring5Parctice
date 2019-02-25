@@ -1,16 +1,19 @@
 package com.abba.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
+import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -29,6 +32,12 @@ import java.util.Properties;
 public class HibernateConfig {
 
     private Environment env;
+
+    @Value("${dataSource.username}")
+    private String username;
+
+    @Value("${dataSource.password}")
+    private String password;
 
     @Autowired
     HibernateConfig(final Environment env){
@@ -84,4 +93,36 @@ public class HibernateConfig {
     }
 
 
+    @Bean
+    public static EnvironmentStringPBEConfig environmentVariablesConfiguration() {
+        EnvironmentStringPBEConfig environmentVariablesConfiguration = new EnvironmentStringPBEConfig();
+        environmentVariablesConfiguration.setAlgorithm("PBEWithMD5AndTripleDES");
+        //environmentVariablesConfiguration.setPasswordEnvName("CAS_PBE_PASSWORD");
+        //super.setPassword(System.getenv(passwordEnvName));
+        environmentVariablesConfiguration.setPassword("jasypt");
+        return environmentVariablesConfiguration;
+    }
+
+    /**
+     * ./encrypt.sh input='Qwer!234' password='jasypt' algorithm='PBEWithMD5AndTripleDES'
+     * @return
+     */
+    @Bean
+    public static StringEncryptor configurationEncryptor() {
+        StandardPBEStringEncryptor configurationEncryptor = new StandardPBEStringEncryptor();
+        configurationEncryptor.setConfig(environmentVariablesConfiguration());
+        String s = configurationEncryptor.encrypt("Qwer!234");
+        System.out.println(s);
+        return configurationEncryptor;
+    }
+
+    @Bean
+    public static PropertyPlaceholderConfigurer propertyConfigurer() {
+        EncryptablePropertyPlaceholderConfigurer propertyConfigurer = new EncryptablePropertyPlaceholderConfigurer(configurationEncryptor());
+        propertyConfigurer.setLocation(new ClassPathResource("database.properties"));
+        // propertyConfigurer.setLocation(resource);
+        return propertyConfigurer;
+    }
 }
+
+
