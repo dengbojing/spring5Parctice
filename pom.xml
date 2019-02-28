@@ -58,6 +58,13 @@
             <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- need for guava -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -151,8 +158,9 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>r05</version>
+            <version>27.0.1-jre</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-access -->
         <dependency>
             <groupId>ch.qos.logback</groupId>

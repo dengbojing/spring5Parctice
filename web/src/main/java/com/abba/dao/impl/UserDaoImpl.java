@@ -13,5 +13,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDaoImpl extends AbstractHibernateDao<User> implements IUserDao<User> {
 
+    @Override
+    public void update(User user) {
+        this.updateByPrimaryKey(user);
+    }
 
+    @Override
+    public void updateExceptiNull(User user) {
+        this.mergeByPrimaryKey(user);
+    }
 }

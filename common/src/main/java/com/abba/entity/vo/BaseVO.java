@@ -1,6 +1,6 @@
 package com.abba.entity.vo;
 
-import com.abba.util.ObjectJudge;
+import com.abba.util.ObjectHelper;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -12,7 +12,7 @@ public abstract class BaseVO<T> {
         this.copyProperties(t);
     }
     private void copyProperties(T t,String...ignoreProperties){
-        if(ObjectJudge.isNotEmpty(t)){
+        if(ObjectHelper.isNotEmpty(t)){
             BeanUtils.copyProperties(t,this,ignoreProperties);
         }
     }

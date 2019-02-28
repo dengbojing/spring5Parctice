@@ -10,5 +10,9 @@ public interface IUserDao<T> {
 
     T hqlQuery(String hql, Map<Integer, Object> params);
 
-    void create(T user);
+    void create(T t);
+
+    void update(T t);
+
+    void updateExceptiNull(T t);
 }

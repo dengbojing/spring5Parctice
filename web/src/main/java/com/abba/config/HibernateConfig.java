@@ -1,10 +1,13 @@
 package com.abba.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
+import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -24,20 +27,23 @@ import java.util.Properties;
 
 /**
  * @author dengbojing
+ * TODO 未完全配置化
  */
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"com.abba.dao"})
-@PropertySource({"classpath:hibernate.properties","classpath:db.properties"})
+@PropertySource({"classpath:hibernate.properties"})
+@Slf4j
 public class HibernateConfig {
 
     private Environment env;
 
-    @Value("${dataSource.username}")
+    @Value("${hibernate.hikari.dataSource.user}")
     private String username;
 
-    @Value("${dataSource.password}")
+    @Value("${hibernate.hikari.dataSource.password}")
     private String password;
+
 
     @Autowired
     HibernateConfig(final Environment env){
@@ -51,8 +57,8 @@ public class HibernateConfig {
         dataSource.setMinimumIdle(5);
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setJdbcUrl( "jdbc:mysql://49.4.71.128:3306/test?autoReconnect=true&useSSL=false");
-        dataSource.setUsername( "root");
-        dataSource.setPassword( "Qwer!234");
+        dataSource.setUsername( username);
+        dataSource.setPassword( password);
         dataSource.setAutoCommit(true);
         dataSource.setIdleTimeout(740000);
         dataSource.setMaxLifetime(1740000);
@@ -79,7 +85,7 @@ public class HibernateConfig {
         return transactionManager;
     }
 
-    private final Properties hibernateProperties() {
+    private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
@@ -92,37 +98,6 @@ public class HibernateConfig {
         return hibernateProperties;
     }
 
-
-    @Bean
-    public static EnvironmentStringPBEConfig environmentVariablesConfiguration() {
-        EnvironmentStringPBEConfig environmentVariablesConfiguration = new EnvironmentStringPBEConfig();
-        environmentVariablesConfiguration.setAlgorithm("PBEWithMD5AndTripleDES");
-        //environmentVariablesConfiguration.setPasswordEnvName("CAS_PBE_PASSWORD");
-        //super.setPassword(System.getenv(passwordEnvName));
-        environmentVariablesConfiguration.setPassword("jasypt");
-        return environmentVariablesConfiguration;
-    }
-
-    /**
-     * ./encrypt.sh input='Qwer!234' password='jasypt' algorithm='PBEWithMD5AndTripleDES'
-     * @return
-     */
-    @Bean
-    public static StringEncryptor configurationEncryptor() {
-        StandardPBEStringEncryptor configurationEncryptor = new StandardPBEStringEncryptor();
-        configurationEncryptor.setConfig(environmentVariablesConfiguration());
-        String s = configurationEncryptor.encrypt("Qwer!234");
-        System.out.println(s);
-        return configurationEncryptor;
-    }
-
-    @Bean
-    public static PropertyPlaceholderConfigurer propertyConfigurer() {
-        EncryptablePropertyPlaceholderConfigurer propertyConfigurer = new EncryptablePropertyPlaceholderConfigurer(configurationEncryptor());
-        propertyConfigurer.setLocation(new ClassPathResource("database.properties"));
-        // propertyConfigurer.setLocation(resource);
-        return propertyConfigurer;
-    }
 }
 
 
