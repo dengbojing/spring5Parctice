@@ -74,6 +74,7 @@ public class ServletConfig extends DelegatingWebMvcConfiguration {//implements W
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("*.js").addResourceLocations("/static/js/");
+        registry.addResourceHandler("*.css").addResourceLocations("/static/css/");
     }
 
     @Override
