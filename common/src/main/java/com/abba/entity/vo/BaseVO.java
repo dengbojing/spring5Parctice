@@ -2,6 +2,7 @@ package com.abba.entity.vo;
 
 import com.abba.util.ObjectHelper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.RepresentationModel;
 
 /**
  * @author dengbojing

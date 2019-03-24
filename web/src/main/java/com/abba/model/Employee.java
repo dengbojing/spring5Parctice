@@ -1,28 +1,14 @@
 package com.abba.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
-/**
- * @author dengbojing
- */
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,8 +16,7 @@ import java.util.Date;
 @Table(name = "t_user")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User implements Serializable {
-
+public class Employee {
     @Id
     @GeneratedValue(generator = "userTableGenerator")
     @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
@@ -56,4 +41,5 @@ public class User implements Serializable {
 
     @Transient
     private LocalDate birth;
+
 }

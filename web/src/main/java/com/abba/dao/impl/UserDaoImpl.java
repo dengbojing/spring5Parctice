@@ -19,7 +19,7 @@ public class UserDaoImpl extends AbstractHibernateDao<User> implements IUserDao<
     }
 
     @Override
-    public void updateExceptiNull(User user) {
+    public void updateExceptNull(User user) {
         this.mergeByPrimaryKey(user);
     }
 }
