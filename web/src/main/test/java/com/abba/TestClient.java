@@ -1,18 +1,19 @@
 package com.abba;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 public class TestClient {
 
     @Test
     public void test(){
-        /*WebClient client = WebClient.create("http://localhost:8088");
-        Mono<User> employeeMono = client.get()
-                .uri("/user/{id}", "1")
-                .retrieve()
-                .bodyToMono(User.class);
-
-        employeeMono.subscribe(System.out::println);*/
+        final int i = 9;
+        setVariable(i);
+        System.out.println(i);
     }
+    public void setVariable(int i){
+        i =10;
+    }
+
 
 }

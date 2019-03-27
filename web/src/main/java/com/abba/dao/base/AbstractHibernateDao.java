@@ -1,4 +1,4 @@
-package com.abba.dao;
+package com.abba.dao.base;
 
 import com.abba.util.ObjectHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <T>
  */
 @Slf4j
-public abstract class AbstractHibernateDao<T extends Serializable> {
+public abstract class AbstractHibernateDao<T extends Serializable> implements IBaseDao<T>{
 
     private Class<T> clazz;
 
@@ -38,9 +38,19 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * 创建对象
      * @param entity 实体对象
      */
+    @Override
     public void create(T entity) {
         checkNotNull(entity);
         getCurrentSession().persist(entity);
+    }
+
+    /**
+     * 创建对象
+     * @param entity 实体对象
+     */
+    @Override
+    public void insert(T entity){
+        this.create(entity);
     }
 
     /**
@@ -49,6 +59,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * @param params key: position, value: real-value
      * @return T --> the query result
      */
+    @Override
     public T hqlQuery(String hql, Map<Integer,Object> params){
         checkNotNull(hql);
         return queryEntity(hql, params).uniqueResult();
@@ -60,6 +71,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * @param params key: position, value: real-value
      * @return List<T>  --> the query result list
      */
+    @Override
     public List<T> hqlQueryList(String hql, Map<Integer,Object> params){
         checkNotNull(hql);
         requireWhere(hql);
@@ -72,6 +84,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * @param params key: position, value: real-value
      * @return T --> the query object
      */
+    @Override
     public T sqlQuery(String sql, Map<Integer,Object> params){
         checkNotNull(sql);
         return nativeQueryEntity(sql, params).uniqueResult();
@@ -83,6 +96,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * @param params key: position, value: real-value
      * @return List<T> --> the query results
      */
+    @Override
     public List<T> sqlQueryList(String sql, Map<Integer,Object> params){
         checkNotNull(sql);
         requireWhere(sql);
@@ -94,7 +108,8 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * @param pid 主键id
      * @return T 数据实体对象
      */
-    public T findEntity(String pid) {
+    @Override
+    public T findByPrimaryKey(String pid) {
         checkNotNull(pid);
         return getCurrentSession().find(clazz, pid);
     }
@@ -103,8 +118,9 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * 根据主键id删除对象
      * @param pid 主键id
      */
+    @Override
     public void deleteByPrimaryKey(String pid){
-        T t = findEntity(pid);
+        T t = findByPrimaryKey(pid);
         getCurrentSession().delete(t);
     }
 
@@ -114,6 +130,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * 如果对象属性为null,则会被更新为null
      * @param t 更新对象
      */
+    @Override
     public void updateByPrimaryKey(T t){
         checkNotNull(t);
         getCurrentSession().update(t);
@@ -124,6 +141,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
      * 如果有空值则不更新
      * @param t 更新对象
      */
+    @Override
     public void mergeByPrimaryKey(T t){
         checkNotNull(t);
         getCurrentSession().merge(t);
