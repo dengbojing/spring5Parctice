@@ -7,6 +7,7 @@ import com.abba.service.impl.UserServiceImpl;
 import com.abba.util.StringHelper;
 import com.abba.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.hibernate.internal.util.collections.CollectionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -18,6 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,4 +112,6 @@ public class UserController {
         Optional<User> optional = userServiceImpl.updateExceptNull(user);
         return BaseResponse.<UserVO>builder().build().success("更新成功",new UserVO(optional.orElse(new User())));
     }
+
+
 }

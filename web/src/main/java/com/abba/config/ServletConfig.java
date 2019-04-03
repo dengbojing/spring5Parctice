@@ -9,7 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -70,6 +72,8 @@ public class ServletConfig extends DelegatingWebMvcConfiguration {//implements W
                 .modulesToInstall(new JavaTimeModule())
                 .modulesToInstall(new Jackson2HalModule());
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        converters.add(new ResourceHttpMessageConverter());
+        converters.add(new ByteArrayHttpMessageConverter());
         //converters.add(new MappingJackson2XmlHttpMessageConverter(builder.createXmlMapper(true).build()));
     }
 

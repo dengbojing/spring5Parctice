@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Pager<T extends BaseVO> {
+public class Pager<T>{
 
     private Pager(){}
 

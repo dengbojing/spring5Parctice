@@ -2,26 +2,23 @@ package com.abba.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
-import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
-import org.jasypt.util.password.BasicPasswordEncryptor;
-import org.jasypt.util.text.BasicTextEncryptor;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.hikaricp.internal.HikariCPConnectionProvider;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManager;
+import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -36,7 +33,7 @@ import java.util.Properties;
 @Slf4j
 public class HibernateConfig {
 
-    private Environment env;
+    private final Environment env;
 
     @Value("${hibernate.hikari.dataSource.user}")
     private String username;
@@ -50,29 +47,37 @@ public class HibernateConfig {
         this.env = env;
     }
 
+
+    @Bean
+    public PersistenceProvider manager(){
+        HibernatePersistenceProvider provider = new HibernatePersistenceProvider();
+        return provider;
+
+    }
+
     @Bean
     public DataSource hikaricpDataSource(){
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setMaximumPoolSize(15);
-        dataSource.setMinimumIdle(5);
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setJdbcUrl( "jdbc:mysql://49.4.71.128:3306/test?autoReconnect=true&useSSL=false");
-        dataSource.setUsername( username);
-        dataSource.setPassword( password);
-        dataSource.setAutoCommit(true);
-        dataSource.setIdleTimeout(740000);
-        dataSource.setMaxLifetime(1740000);
-        dataSource.addDataSourceProperty("cachePrepStmts", true);
-        dataSource.addDataSourceProperty("prepStmtCacheSize", 250);
-        dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
-        dataSource.addDataSourceProperty("useServerPrepStmts", true);
-        return dataSource;
+        HikariDataSource hikari = new HikariDataSource();
+        hikari.setMaximumPoolSize(15);
+        hikari.setMinimumIdle(5);
+        hikari.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        hikari.setJdbcUrl( "jdbc:mysql://49.4.71.128:3306/test?autoReconnect=true&useSSL=false");
+        hikari.setUsername( username);
+        hikari.setPassword( password);
+        hikari.setAutoCommit(true);
+        hikari.setIdleTimeout(740000);
+        hikari.setMaxLifetime(1740000);
+        hikari.addDataSourceProperty("cachePrepStmts", true);
+        hikari.addDataSourceProperty("prepStmtCacheSize", 250);
+        hikari.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
+        hikari.addDataSourceProperty("useServerPrepStmts", true);
+        return hikari;
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(hikaricpDataSource());
+        //sessionFactory.setDataSource(hikaricpDataSource());
         sessionFactory.setPackagesToScan("com.abba.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
@@ -95,6 +100,15 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.cache.region.factory_class",env.getProperty("hibernate.cache.region.factory_class"));
         hibernateProperties.setProperty("hibernate.cache.use_query_cache",env.getProperty("hibernate.cache.use_query_cache"));
         hibernateProperties.setProperty("hibernate.cache.ehcache.missing_cache_strategy",env.getProperty("hibernate.cache.ehcache.missing_cache_strategy"));
+        hibernateProperties.setProperty("hibernate.connection.driver_class",env.getProperty("hibernate.connection.driver_class"));
+        hibernateProperties.setProperty("hibernate.connection.provider_class",env.getProperty("hibernate.connection.provider_class"));
+        hibernateProperties.setProperty("hibernate.connection.url",env.getProperty("hibernate.connection.url"));
+        hibernateProperties.setProperty("hibernate.connection.username",username);
+        hibernateProperties.setProperty("hibernate.connection.password",password);
+        hibernateProperties.setProperty("hibernate.connection.autocommit",env.getProperty("hibernate.connection.autocommit"));
+        hibernateProperties.setProperty("hibernate.hikari.minimumIdle",env.getProperty("hibernate.hikari.minimumIdle"));
+        hibernateProperties.setProperty("hibernate.hikari.maximumPoolSize",env.getProperty("hibernate.hikari.maximumPoolSize"));
+        hibernateProperties.setProperty("hibernate.hikari.idleTimeout",env.getProperty("hibernate.hikari.idleTimeout"));
         return hibernateProperties;
     }
 

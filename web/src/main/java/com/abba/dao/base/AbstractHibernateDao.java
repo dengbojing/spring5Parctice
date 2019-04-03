@@ -162,7 +162,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements IB
      * @return sql查询对象
      */
     private NativeQuery<T> nativeQueryEntity(String sql, Map<Integer, Object> params){
-        NativeQuery<T> query = getCurrentSession().createSQLQuery(sql);
+        NativeQuery<T> query = getCurrentSession().createNativeQuery(sql,clazz);
         if(ObjectHelper.isNotEmpty(params)){
             params.forEach((k,v) -> query.setCacheable(true).setParameter(k,v));
         }

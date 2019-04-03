@@ -1,6 +1,5 @@
 package com.abba;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 public class TestClient {
@@ -14,6 +13,5 @@ public class TestClient {
     public void setVariable(int i){
         i =10;
     }
-
 
 }
