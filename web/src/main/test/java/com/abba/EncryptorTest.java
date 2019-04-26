@@ -17,7 +17,7 @@ public class EncryptorTest {
     public void configurationEncryptor() {
         BasicTextEncryptor basicTextEncryptor = new BasicTextEncryptor();
         basicTextEncryptor.setPassword("jas");
-        String name = basicTextEncryptor.encrypt("root");
+        String name = basicTextEncryptor.encrypt("m123456");
         log.info(name);
     }
 

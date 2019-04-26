@@ -1,6 +1,6 @@
 {
   "singleServerConfig":{
-    "address": "redis://49.4.71.128:6379",
+    "address": "redis://49.4.71.128:63792",
     "password": "redis-test-dev",
     "database": 5
   },
