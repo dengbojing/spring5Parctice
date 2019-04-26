@@ -33,7 +33,7 @@ public class PushController {
 
     @RequestMapping(value="/push/{fileId}", method = RequestMethod.GET,produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> userHeader(@PathVariable("fileId") String fileId) throws IOException {
-        String url = ""; 
+        String url = "";  
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         okhttp3.Response okResponse = okHttpClient.newCall(request).execute();
