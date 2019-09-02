@@ -15,11 +15,7 @@ import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -35,7 +31,7 @@ import java.util.List;
  */
 @ComponentScan("com.abba.controller")
 //@EnableWebMvc
-public class ServletConfig extends DelegatingWebMvcConfiguration {//implements WebMvcConfigurer {
+public class ServletConfig extends DelegatingWebMvcConfiguration{//implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
 
@@ -58,7 +54,7 @@ public class ServletConfig extends DelegatingWebMvcConfiguration {//implements W
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LocaleChangeInterceptor());
-        registry.addInterceptor(new ThemeChangeInterceptor()).addPathPatterns("/**").excludePathPatterns("/admin/**");
+        registry.addInterceptor(new ThemeChangeInterceptor()).addPathPatterns("/**").excludePathPatterns("/admin/**","/vendor/**","/css/**","/js/**");
         //registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/secure/*");
     }
 
@@ -79,8 +75,10 @@ public class ServletConfig extends DelegatingWebMvcConfiguration {//implements W
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("*.js").addResourceLocations("/static/js/");
-        registry.addResourceHandler("*.css").addResourceLocations("/static/css/");
+        registry.addResourceHandler("/vendor/**/*.js","/vendor/**/*.css","/vendor/**/*.ttf","/vendor/**/*.woff").addResourceLocations("/WEB-INF/view/vendor/");
+        registry.addResourceHandler("/css/**/*.css","/css/**/*.ttf","/css/**/*.woff","/css/**/*.woff2").addResourceLocations("/WEB-INF/view/css/");
+        registry.addResourceHandler("/js/**/*.js").addResourceLocations("/WEB-INF/view/js/");
+        registry.addResourceHandler("/img/**/*.svg","/img/**/*.png","/img/**/*.jpg","/img/**/*.jpeg").addResourceLocations("/WEB-INF/view/img/");
     }
 
     @Override

@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * @author dengbojing
+ */
 @Getter
 @Setter
 public class Pager<T>{
 
-    private Pager(){}
 
     /**
      * 每页条数

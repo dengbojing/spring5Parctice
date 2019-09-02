@@ -35,7 +35,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(generator = "userTableGenerator")
     @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
-    @Column
+    @Column(length = 36)
     private String id;
     @Column
     private String userLoginName;

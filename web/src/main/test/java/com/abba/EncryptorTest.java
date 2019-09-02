@@ -18,7 +18,11 @@ public class EncryptorTest {
         BasicTextEncryptor basicTextEncryptor = new BasicTextEncryptor();
         basicTextEncryptor.setPassword("jas");
         String name = basicTextEncryptor.encrypt("root");
+        String pwd = basicTextEncryptor.encrypt("20042156q");
+        String url = basicTextEncryptor.encrypt("jdbc:mysql://localhost:3305/yichen_trash_bin?autoReconnect=true&useSSL=false");
         log.info(name);
+        log.info(pwd);
+        log.info(url);
     }
 
     @Test

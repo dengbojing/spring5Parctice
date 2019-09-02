@@ -2,6 +2,7 @@ package com.abba.service.impl;
 
 import com.abba.dao.IUserDao;
 import com.abba.entity.BaseResponse;
+import com.abba.entity.vo.Pager;
 import com.abba.model.User;
 import com.abba.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -60,5 +61,9 @@ public class UserServiceImpl {
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<User> queryAll() {
         return userDao.hqlQueryList("from User where 1=1", null);
+    }
+
+    public List<User> page(){
+        return userDao.page(new Pager());
     }
 }

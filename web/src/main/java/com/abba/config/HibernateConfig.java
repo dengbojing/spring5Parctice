@@ -14,17 +14,22 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
  * @author dengbojing
- * TODO 未完全配置化
  */
 @Configuration
 @EnableTransactionManagement
@@ -35,11 +40,14 @@ public class HibernateConfig {
 
     private final Environment env;
 
-    @Value("${hibernate.hikari.dataSource.user}")
+    @Value("${hibernate.connection.username}")
     private String username;
 
-    @Value("${hibernate.hikari.dataSource.password}")
+    @Value("${hibernate.connection.password}")
     private String password;
+
+    @Value("${hibernate.connection.url}")
+    private String url;
 
 
     @Autowired
@@ -48,15 +56,13 @@ public class HibernateConfig {
     }
 
 
-    @Bean
-    public PersistenceProvider manager(){
-        HibernatePersistenceProvider provider = new HibernatePersistenceProvider();
-        return provider;
-
-    }
-
-    @Bean
-    public DataSource hikaricpDataSource(){
+    /**
+     * 添加hibernate-hikari jar包
+     * hibernate直接可以设置hikari属性
+     * @return hikariDataSource
+     */
+    @Deprecated
+    public DataSource hikariDataSource(){
         HikariDataSource hikari = new HikariDataSource();
         hikari.setMaximumPoolSize(15);
         hikari.setMinimumIdle(5);
@@ -74,10 +80,15 @@ public class HibernateConfig {
         return hikari;
     }
 
+    /**
+     * LocalSessionFactoryBean 可以直接替代JPA LocalContainerEntityManagerFactoryBean
+     * 对外暴露EntityManagerFactory以及直接使用HibernateTransactionManager作为jpaTransaction
+     * 详见LocalSessionFactoryBean 注释
+     * @return sessionFactory
+     */
     @Bean
     public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        //sessionFactory.setDataSource(hikaricpDataSource());
         sessionFactory.setPackagesToScan("com.abba.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
@@ -102,7 +113,7 @@ public class HibernateConfig {
         hibernateProperties.setProperty("hibernate.cache.ehcache.missing_cache_strategy",env.getProperty("hibernate.cache.ehcache.missing_cache_strategy"));
         hibernateProperties.setProperty("hibernate.connection.driver_class",env.getProperty("hibernate.connection.driver_class"));
         hibernateProperties.setProperty("hibernate.connection.provider_class",env.getProperty("hibernate.connection.provider_class"));
-        hibernateProperties.setProperty("hibernate.connection.url",env.getProperty("hibernate.connection.url"));
+        hibernateProperties.setProperty("hibernate.connection.url",url);
         hibernateProperties.setProperty("hibernate.connection.username",username);
         hibernateProperties.setProperty("hibernate.connection.password",password);
         hibernateProperties.setProperty("hibernate.connection.autocommit",env.getProperty("hibernate.connection.autocommit"));

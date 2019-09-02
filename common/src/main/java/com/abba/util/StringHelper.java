@@ -30,4 +30,25 @@ public class StringHelper {
         Splitter splitter = Splitter.on(separator);
         return splitter.trimResults().splitToList(seq);
     }
+
+    public static boolean isNullValue(CharSequence seq){
+        int nullLength = 4;
+        if(seq.length() != nullLength){
+            return false;
+        }else{
+            String s1 = String.valueOf(seq.charAt(0));
+            String s2 = String.valueOf(seq.charAt(1));
+            String s3 = String.valueOf(seq.charAt(2));
+            String s4 = String.valueOf(seq.charAt(3));
+            if(s1.equalsIgnoreCase("n") && s2.equalsIgnoreCase("u") &&
+            s3.equalsIgnoreCase("l") && s4.equalsIgnoreCase("l")){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+
+
 }
