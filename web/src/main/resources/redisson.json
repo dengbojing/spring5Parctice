@@ -1,0 +1,10 @@
+{
+  "singleServerConfig":{
+    "address": "redis://49.4.71.128:63792",
+    "password": "redis-test-dev",
+    "database": 5
+  },
+  "codec":{
+    "class":"org.redisson.codec.FstCodec"
+  }
+}

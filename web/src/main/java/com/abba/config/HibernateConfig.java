@@ -57,12 +57,43 @@ public class HibernateConfig {
 
 
     /**
-     * 添加hibernate-hikari jar包
-     * hibernate直接可以设置hikari属性
-     * @return hikariDataSource
-     */
+     * 使用hibernate默认选取数据源策略,不显示配置dataSource
+     *
+     * If hibernate.connection.provider_class is set, it takes precedence
+     *
+     * else if hibernate.connection.datasource is set → Using DataSources
+     *
+     * else if any setting prefixed by hibernate.c3p0. is set → Using c3p0
+     *
+     * else if any setting prefixed by hibernate.proxool. is set → Using Proxool
+     *
+     * else if any setting prefixed by hibernate.hikari. is set → Using Hikari
+     *
+     * else if hibernate.connection.url is set → Using Hibernate’s built-in (and unsupported) pooling
+     *
+     * else → User-provided Connections
+     *
+     * @return
+     *
+     *
+     *  */
+    @Bean
+    public PersistenceProvider manager(){
+        HibernatePersistenceProvider provider = new HibernatePersistenceProvider();
+        return provider;
+
+    }
+
+    /**
+     *      * 添加hibernate-hikari jar包
+     *      * hibernate直接可以设置hikari属性
+     *      * @return hikariDataSource
+     *
+     *
+     *    */
+    @Bean
     @Deprecated
-    public DataSource hikariDataSource(){
+    public DataSource hikaricpDataSource(){
         HikariDataSource hikari = new HikariDataSource();
         hikari.setMaximumPoolSize(15);
         hikari.setMinimumIdle(5);
@@ -103,20 +134,25 @@ public class HibernateConfig {
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
+        //sql config
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         hibernateProperties.setProperty("hibernate.show_sql",env.getProperty("hibernate.show_sql"));
         hibernateProperties.setProperty("hibernate.format_sql",env.getProperty("hibernate.format_sql"));
+        //cache config
         hibernateProperties.setProperty("hibernate.cache.use_second_level_cache",env.getProperty("hibernate.cache.use_second_level_cache"));
+        hibernateProperties.setProperty("hibernate.cache.redisson.config",env.getProperty("hibernate.cache.redisson.config"));
         hibernateProperties.setProperty("hibernate.cache.region.factory_class",env.getProperty("hibernate.cache.region.factory_class"));
         hibernateProperties.setProperty("hibernate.cache.use_query_cache",env.getProperty("hibernate.cache.use_query_cache"));
         hibernateProperties.setProperty("hibernate.cache.ehcache.missing_cache_strategy",env.getProperty("hibernate.cache.ehcache.missing_cache_strategy"));
+        //connection config
         hibernateProperties.setProperty("hibernate.connection.driver_class",env.getProperty("hibernate.connection.driver_class"));
         hibernateProperties.setProperty("hibernate.connection.provider_class",env.getProperty("hibernate.connection.provider_class"));
         hibernateProperties.setProperty("hibernate.connection.url",url);
         hibernateProperties.setProperty("hibernate.connection.username",username);
         hibernateProperties.setProperty("hibernate.connection.password",password);
         hibernateProperties.setProperty("hibernate.connection.autocommit",env.getProperty("hibernate.connection.autocommit"));
+        // datasource config
         hibernateProperties.setProperty("hibernate.hikari.minimumIdle",env.getProperty("hibernate.hikari.minimumIdle"));
         hibernateProperties.setProperty("hibernate.hikari.maximumPoolSize",env.getProperty("hibernate.hikari.maximumPoolSize"));
         hibernateProperties.setProperty("hibernate.hikari.idleTimeout",env.getProperty("hibernate.hikari.idleTimeout"));
