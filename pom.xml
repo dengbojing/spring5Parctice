@@ -24,9 +24,9 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <name>spring5Practice</name>
+    <name>parent</name>
     <groupId>com.abba</groupId>
-    <artifactId>spring5Practice</artifactId>
+    <artifactId>softya</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
@@ -224,6 +224,19 @@
             <artifactId>okhttp</artifactId>
             <version>3.14.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.59</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.4</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.redisson</groupId>
             <!-- for Hibernate v4.x -->

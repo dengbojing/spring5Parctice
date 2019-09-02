@@ -11,6 +11,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author dengbojing
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,9 +25,9 @@ import java.io.Serializable;
 public class Department implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "userTableGenerator")
-    @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
-    @Column
+    @GeneratedValue(generator = "departmentTableGenerator")
+    @GenericGenerator(name = "departmentTableGenerator", strategy = "uuid2")
+    @Column(length = 36)
     private String pid;
 
     @Column

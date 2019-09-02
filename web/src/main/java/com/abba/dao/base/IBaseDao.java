@@ -1,6 +1,8 @@
 package com.abba.dao.base;
 
 import com.abba.entity.vo.Pager;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.io.Serializable;
 import java.util.List;
@@ -84,5 +86,14 @@ public interface IBaseDao<T extends Serializable> {
      */
     void mergeByPrimaryKey(T t);
 
+    /**
+     * 分页查询
+     * @param pager 分页查询条件
+     * @return 分页查询结果
+     */
     List<T> page(Pager pager);
+
+    Session getCurrentSession();
+
+    SessionFactory getSessionFactory();
 }

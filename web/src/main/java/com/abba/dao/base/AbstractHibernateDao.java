@@ -1,5 +1,7 @@
 package com.abba.dao.base;
 
+import com.abba.entity.vo.Pager;
+import com.abba.model.User;
 import com.abba.util.ObjectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -8,6 +10,11 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -23,10 +30,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Slf4j
 public abstract class AbstractHibernateDao<T extends Serializable> implements IBaseDao<T>{
 
-    private Class<T> clazz;
+    protected Class<T> clazz;
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     protected AbstractHibernateDao(){
@@ -148,10 +158,27 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements IB
     }
 
     /**
+     * 分页查询
+     * @param pager 分页查询条件
+     * @return 分页集合
+     */
+    @Override
+    public List<T> page(Pager pager) {
+        CriteriaQuery<T> query = entityManager.getCriteriaBuilder().createQuery(this.clazz);
+        Root<T> root = query.from(this.clazz);
+        query.select(root);
+        TypedQuery<T> typedQuery=entityManager.createQuery(query);
+        typedQuery.setFirstResult(pager.getPageNum()*pager.getPageSize());
+        typedQuery.setMaxResults(pager.getPageSize());
+        return typedQuery.getResultList();
+    }
+
+    /**
      * 获取session
      * @return hibernate session
      */
-    protected Session getCurrentSession() {
+    @Override
+    public Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -183,4 +210,8 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements IB
         return query;
     }
 
+    @Override
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
 }

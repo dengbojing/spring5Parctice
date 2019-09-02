@@ -5,22 +5,26 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * @author dengbojing
+ */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "t_user")
+@Table(name = "t_employee")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Employee {
+public class Employee implements Serializable {
     @Id
-    @GeneratedValue(generator = "userTableGenerator")
-    @GenericGenerator(name = "userTableGenerator", strategy = "uuid2")
-    @Column
+    @GeneratedValue(generator = "employeeTableGenerator")
+    @GenericGenerator(name = "employeeTableGenerator", strategy = "uuid2")
+    @Column(length = 36)
     private String id;
     @Column
     private String userLoginName;

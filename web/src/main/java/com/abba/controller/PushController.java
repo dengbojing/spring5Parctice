@@ -33,12 +33,12 @@ public class PushController {
 
     @RequestMapping(value="/push/{fileId}", method = RequestMethod.GET,produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> userHeader(@PathVariable("fileId") String fileId) throws IOException {
-        String url = "";
+        String url = "http://222.240.44.43:20204/WebApi/GCJS/DownloadFile?access_token=945659af570a4c0195d999f353e0753d&time=&fileid=L-121cbc171dca482498ebc0325959517b-1";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         okhttp3.Response okResponse = okHttpClient.newCall(request).execute();
-        //InputStream in = okResponse.body().byteStream();
-        InputStream in = new FileInputStream("F:\\data\\target\\logs\\"+fileId+".mp4");
+        InputStream in = okResponse.body().byteStream();
+        //InputStream in = new FileInputStream("F:\\data\\target\\logs\\"+fileId+".mp4");
         ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok();
         return bodyBuilder.body(IOUtils.toByteArray(in));
     }

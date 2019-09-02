@@ -76,7 +76,7 @@ public class UserController {
      */
     @GetMapping("all")
     public PageResponse<UserVO> getAll(){
-        List<User> list = userServiceImpl.queryAll();
+        List<User> list = userServiceImpl.page();
         return PageResponse.<UserVO>builder().build().adaptive(CollectionHelper::isNotEmpty,
                 list.stream().map(user -> new UserVO(user)).collect(Collectors.toList()));
     }

@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 @Data
 @Builder
 @AllArgsConstructor
-public class BaseResponse<T extends BaseVO> {
+public class BaseResponse<T> {
 
     private Integer status;
 
