@@ -1,6 +1,6 @@
 package com.abba.dao.base;
 
-import com.abba.entity.vo.Pager;
+import com.abba.entity.request.Pager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

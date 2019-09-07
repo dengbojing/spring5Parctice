@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 @ComponentScan("com.abba.controller")
 //@EnableWebMvc
+@EnableAspectJAutoProxy
 public class ServletConfig extends DelegatingWebMvcConfiguration{//implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

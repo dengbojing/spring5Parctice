@@ -1,10 +1,9 @@
 package com.abba.util;
 
-import com.abba.entity.vo.BaseVO;
-import com.abba.entity.vo.Pager;
+import com.abba.entity.AbstractVO;
 
 import java.util.List;
 
-public interface PageHelper<T extends BaseVO> {
+public interface PageHelper<T extends AbstractVO> {
     List<T> doPage();
 }

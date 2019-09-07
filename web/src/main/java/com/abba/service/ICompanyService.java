@@ -1,9 +1,7 @@
 package com.abba.service;
 
-import com.abba.entity.vo.Pager;
-import com.abba.model.Company;
+import com.abba.entity.request.Pager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,18 @@ import java.util.Optional;
 public interface ICompanyService<T> {
 
 
+    /**
+     * 添加公司
+     * @param t
+     * @return
+     */
     Optional<Integer> add(T t);
+
+    /**
+     * 批量添加
+     * @param list
+     * @return
+     */
     Optional<Integer> add(List<T> list);
     /**
      * 转换公司经纬度

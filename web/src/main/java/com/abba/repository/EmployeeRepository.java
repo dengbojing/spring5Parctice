@@ -1,7 +1,7 @@
 package com.abba.repository;
 
 
-import com.abba.model.Employee;
+import com.abba.model.po.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

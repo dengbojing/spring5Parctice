@@ -5,7 +5,7 @@ import com.abba.config.HibernateConfig;
 import com.abba.config.RootConfig;
 import com.abba.config.ServletConfig;
 import com.abba.dao.ICompanyDao;
-import com.abba.model.Company;
+import com.abba.model.po.Company;
 import com.abba.util.CSVReaderHelper;
 import com.abba.util.StringHelper;
 import com.alibaba.fastjson.JSONObject;

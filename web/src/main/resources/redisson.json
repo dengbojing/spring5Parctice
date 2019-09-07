@@ -1,7 +1,7 @@
 {
   "singleServerConfig":{
-    "address": "redis://49.4.71.128:63792",
-    "password": "redis-test-dev",
+    "address": "redis://47.108.75.63:63792",
+    "password": "softya9000",
     "database": 5
   },
   "codec":{

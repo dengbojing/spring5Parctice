@@ -1,6 +1,6 @@
 package com.abba.controller;
 
-import com.abba.model.Employee;
+import com.abba.model.po.Employee;
 import com.abba.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;

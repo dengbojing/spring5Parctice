@@ -1,6 +1,6 @@
 package com.abba.service;
 
-import com.abba.vo.SysParameterVO;
+import com.abba.model.vo.SysParameterVO;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,5 +24,10 @@ public interface ISysParameterService<T> {
     Optional<T> queryRootByType(String type);
 
 
-    List<SysParameterVO> queryAll(String type);
+    /**
+     * 根绝type查询所有数据
+     * @param type 数据类型
+     * @return
+     */
+    List<T> queryAll(String type);
 }

@@ -120,7 +120,7 @@ public class HibernateConfig {
     @Bean
     public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setPackagesToScan("com.abba.model");
+        sessionFactory.setPackagesToScan("com.abba.model.po");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

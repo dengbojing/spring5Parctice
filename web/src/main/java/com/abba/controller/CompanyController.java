@@ -1,7 +1,7 @@
 package com.abba.controller;
 
-import com.abba.entity.vo.Pager;
-import com.abba.model.Company;
+import com.abba.entity.request.Pager;
+import com.abba.model.po.Company;
 import com.abba.service.ICompanyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**

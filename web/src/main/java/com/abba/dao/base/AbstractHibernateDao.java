@@ -1,7 +1,6 @@
 package com.abba.dao.base;
 
-import com.abba.entity.vo.Pager;
-import com.abba.model.User;
+import com.abba.entity.request.Pager;
 import com.abba.util.ObjectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;

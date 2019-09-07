@@ -1,6 +1,5 @@
 package com.abba;
 
-import com.abba.model.Company;
 import com.abba.util.CSVReaderHelper;
 import com.abba.util.StringHelper;
 import org.junit.Test;
