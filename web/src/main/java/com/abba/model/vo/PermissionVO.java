@@ -21,7 +21,7 @@ public class PermissionVO extends AbstractVO<PermissionDTO> {
 
     private String permissionType;
 
-    private List<PageVO> roles;
+    private List<PageVO> pages;
 
     private List<MenuVO> menus;
 

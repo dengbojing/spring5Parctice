@@ -3,7 +3,7 @@ package com.abba.dao.base;
 import com.abba.entity.request.Pager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +67,12 @@ public interface IBaseDao<T extends Serializable> {
     T findByPrimaryKey(String pid) ;
 
     /**
+     * 查询所有对象
+     * @return 对象列表
+     */
+    List<T> findAll();
+
+    /**
      * 根据主键id删除对象
      * @param pid 主键id
      */
@@ -87,11 +93,20 @@ public interface IBaseDao<T extends Serializable> {
     void mergeByPrimaryKey(T t);
 
     /**
-     * 分页查询
+     * 分页查询--未完善
      * @param pager 分页查询条件
+     * @param restrictions 查询条件
      * @return 分页查询结果
      */
-    List<T> page(Pager pager);
+    Pager<T> page(Pager<T> pager, Predicate... restrictions);
+
+    /**
+     * 分页查询
+     * @param pager 分页参数
+     * @param hql 查询语句
+     * @return
+     */
+    Pager<T> page(Pager<T> pager, String hql);
 
     Session getCurrentSession();
 

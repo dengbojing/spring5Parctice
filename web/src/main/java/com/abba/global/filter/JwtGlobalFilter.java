@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author dengbojing
  */
 @WebFilter(urlPatterns = "/*",filterName = "GlobalFilter",asyncSupported = false,
-        initParams = {@WebInitParam(name = "whiteList", value = "/;/index;/login")})
+initParams = {@WebInitParam(name = "whiteList", value = "/;/index;/login;/login/cipher;/login/cipher/verify")})
 @Slf4j
 public class JwtGlobalFilter implements Filter{
 

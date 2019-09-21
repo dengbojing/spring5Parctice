@@ -1,6 +1,7 @@
 package com.abba.service.impl;
 
 import com.abba.dao.ISysParameterDao;
+import com.abba.model.bo.SysParam;
 import com.abba.model.dto.SysParameterDTO;
 import com.abba.model.po.SysParameter;
 import com.abba.service.ISysParameterService;
@@ -32,13 +33,13 @@ public class SysParameterImpl implements ISysParameterService<SysParameterDTO> {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public List<SysParameterDTO> queryByParentIdAndType(Integer id, String type) {
+    public List<SysParameterDTO> getByParentIdAndType(Integer id, String type) {
         return null;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Optional<SysParameterDTO> queryRootByType(String type) {
+    public Optional<SysParameterDTO> getRootByType(String type) {
         Map<Integer,Object> params = new HashMap<>(2);
         params.put(1, type);
         SysParameter parameter = sysParameterDao.hqlQuery(" from SysParameter where type = ?1 and level = 0",params);
@@ -47,7 +48,7 @@ public class SysParameterImpl implements ISysParameterService<SysParameterDTO> {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public List<SysParameterDTO> queryAll(String type) {
+    public List<SysParameterDTO> getAll(String type) {
         Map<Integer,Object> params = new HashMap<>(2);
         params.put(1, type);
         List<SysParameter> list = sysParameterDao.hqlQueryList("from SysParameter where type = ?1",params);
@@ -63,5 +64,20 @@ public class SysParameterImpl implements ISysParameterService<SysParameterDTO> {
         }
         Map<Integer, List<SysParameterDTO>> map = voList.stream().collect(Collectors.groupingBy(SysParameterDTO::getLevel,TreeMap::new,Collectors.toList()));
         return map.get(0);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public Optional<SysParameterDTO> add(SysParam param) {
+        SysParameter sysParameter = new SysParameter();
+        param.copyTo(sysParameter);
+        sysParameterDao.create(sysParameter);
+        return Optional.of(new SysParameterDTO(sysParameter));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void batchAdd(List<SysParam> params) {
+        params.forEach(this::add);
     }
 }

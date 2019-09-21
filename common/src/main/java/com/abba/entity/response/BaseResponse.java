@@ -24,9 +24,23 @@ public class BaseResponse<T> {
 
     private BaseResponse(){}
 
+    public BaseResponse<T> success(T t){
+        this.status = 200;
+        this.message = "success";
+        this.data = t;
+        return this;
+    }
+
     public BaseResponse<T> success(String message, T t){
         this.status = 200;
         this.message = message;
+        this.data = t;
+        return this;
+    }
+
+    public BaseResponse<T> failure(T t){
+        this.status = 500;
+        this.message = "failure";
         this.data = t;
         return this;
     }

@@ -3,8 +3,8 @@ package com.abba.entity;
 import com.abba.util.ObjectHelper;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
@@ -13,6 +13,7 @@ import java.io.Serializable;
 /**
  * @author dengbojing
  */
+@Slf4j
 @NoArgsConstructor
 public abstract class AbstractDTO<T extends Serializable> {
 
@@ -29,8 +30,13 @@ public abstract class AbstractDTO<T extends Serializable> {
         }
     }
 
-    public AbstractDTO fullCopy(T t) throws IOException {
-        return objectMapper.readValue(JSON.toJSONString(t),AbstractDTO.class);
+    public <E extends AbstractDTO> E fullCopy(T t,Class<E> c) {
+        try {
+            return objectMapper.readValue(JSON.toJSONString(t),c);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override

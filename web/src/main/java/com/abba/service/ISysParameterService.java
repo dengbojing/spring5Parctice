@@ -1,5 +1,6 @@
 package com.abba.service;
 
+import com.abba.model.bo.SysParam;
 import com.abba.model.vo.SysParameterVO;
 
 import java.util.List;
@@ -14,14 +15,14 @@ public interface ISysParameterService<T> {
      * 根据id和类型获取系统参数
      * @return
      */
-    List<T> queryByParentIdAndType(Integer parentId, String type);
+    List<T> getByParentIdAndType(Integer parentId, String type);
 
     /**
      * 获取该类型的根节点（level为0）
      * @param type
      * @return
      */
-    Optional<T> queryRootByType(String type);
+    Optional<T> getRootByType(String type);
 
 
     /**
@@ -29,5 +30,19 @@ public interface ISysParameterService<T> {
      * @param type 数据类型
      * @return
      */
-    List<T> queryAll(String type);
+    List<T> getAll(String type);
+
+    /**
+     * 添加系统参数
+     * @param param
+     * @return
+     */
+    Optional<T> add(SysParam param);
+
+    /**
+     * 批量添加系统参数
+     * @param params
+     * @return
+     */
+    void batchAdd(List<SysParam> params);
 }

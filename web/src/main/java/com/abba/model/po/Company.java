@@ -92,18 +92,6 @@ public class Company implements Serializable {
     private String highTech;
 
     /**
-     * 所在城市-片区
-     */
-    @Column(name = "c_region")
-    private String region;
-
-    /**
-     * 所在城市
-     */
-    @Column(name = "c_city")
-    private String city;
-
-    /**
      * 是否个体商户
      */
     @Column(name = "c_individual")
@@ -152,5 +140,53 @@ public class Company implements Serializable {
     @Column(name = "c_district")
     private String district;
 
+    /**
+     * 坐标
+     */
+    private GPS gps;
 
+    /**
+     * 城市信息
+     */
+    private City city;
+
+    /**
+     * 标签--是否规上,小微企业等等
+     */
+    @Column(name = "c_tags")
+    private String tags;
+
+
+    public void setGcjLat(double lat) {
+        this.gps.setGcjLat(lat);
+    }
+
+    public void setGcjLon(double lon) {
+        this.gps.setGcjLon(lon);
+    }
+
+    public void setWgs84Lat(double lat) {
+        this.gps.setWgs84Lat(lat);
+    }
+
+    public void setWgs84Lon(double lon) {
+        this.gps.setWgs84Lat(lon);
+    }
+
+    public double getGcjLat() {
+        return this.gps.getGcjLat();
+    }
+
+    public double getGcjLon() {
+        return this.gps.getGcjLon();
+    }
+
+
+    public Double getWgs84Lat(){
+        return this.gps.getWgs84Lat();
+    }
+
+    public Double getWgs84Lon(){
+        return this.gps.getWgs84Lon();
+    }
 }

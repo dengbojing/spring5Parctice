@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -54,8 +55,9 @@ public class Role implements Serializable {
     private Integer status;
 
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
+    @Cascade({CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE,CascadeType.SAVE_UPDATE})
     @JoinTable(name="t_role_permission",
             joinColumns={@JoinColumn(name="c_role_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns={@JoinColumn(name="c_permission_id",referencedColumnName = "id", nullable = false)},

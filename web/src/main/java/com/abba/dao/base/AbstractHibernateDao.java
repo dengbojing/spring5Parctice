@@ -1,8 +1,11 @@
 package com.abba.dao.base;
 
 import com.abba.entity.request.Pager;
+import com.abba.exception.BusinessException;
 import com.abba.util.ObjectHelper;
+import com.abba.util.StringHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -123,6 +128,22 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements IB
         return getCurrentSession().find(clazz, pid);
     }
 
+
+    /**
+     * 查询所有对象
+     * @return 对象列表
+     */
+    @Override
+    public List<T> findAll(){
+        Session session = getCurrentSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(clazz);
+        Root<T> rootEntry = cq.from(clazz);
+        CriteriaQuery<T> all = cq.select(rootEntry);
+        TypedQuery<T> allQuery = session.createQuery(all);
+        return allQuery.getResultList();
+    }
+
     /**
      * 根据主键id删除对象
      * @param pid 主键id
@@ -162,14 +183,44 @@ public abstract class AbstractHibernateDao<T extends Serializable> implements IB
      * @return 分页集合
      */
     @Override
-    public List<T> page(Pager pager) {
-        CriteriaQuery<T> query = entityManager.getCriteriaBuilder().createQuery(this.clazz);
+    public Pager<T> page(Pager<T> pager, Predicate... restrictions) {
+        checkNotNull(pager);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> countQuery = criteriaBuilder
+                .createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(
+                countQuery.from(this.clazz)));
+        Long count = entityManager.createQuery(countQuery)
+                .getSingleResult();
+        pager.setTotalCount(count);
+        CriteriaQuery<T> query = criteriaBuilder.createQuery(this.clazz);
         Root<T> root = query.from(this.clazz);
         query.select(root);
-        TypedQuery<T> typedQuery=entityManager.createQuery(query);
+        TypedQuery<T> typedQuery = entityManager.createQuery(query);
         typedQuery.setFirstResult(pager.getPageNum()*pager.getPageSize());
         typedQuery.setMaxResults(pager.getPageSize());
-        return typedQuery.getResultList();
+        pager.setData(typedQuery.getResultList());
+        return pager;
+    }
+
+
+    @Override
+    public Pager<T> page(Pager<T> pager, String hql){
+        checkNotNull(pager);
+        List<String> hqls = StringHelper.split(hql.toUpperCase(),"FROM");
+        if(hqls.size() < 1){
+            throw new BusinessException("invalid hql!");
+        }
+        String hqlCount = "Select count(id) from " + hqls.get(1);
+        javax.persistence.Query queryTotal = entityManager.createQuery
+                (hqlCount);
+        Long count = (Long)queryTotal.getSingleResult();
+        pager.setTotalCount(count);
+        javax.persistence.Query query = entityManager.createQuery
+                (hql);
+        List<T> list = query.getResultList();
+        pager.setData(list);
+        return pager;
     }
 
     /**

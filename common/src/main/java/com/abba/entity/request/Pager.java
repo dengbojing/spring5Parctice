@@ -16,22 +16,22 @@ public class Pager<T>{
     /**
      * 每页条数
      */
-    private int pageSize;
+    private Integer pageSize=10;
 
     /**
      * 页码
      */
-    private int pageNum;
+    private Integer pageNum=1;
 
     /**
      * 总页数
      */
-    private int pageCount;
+    private Integer pageCount;
 
     /**
      * 总条数
      */
-    private int totalCount;
+    private Long totalCount;
 
     /**
      * 数据集合

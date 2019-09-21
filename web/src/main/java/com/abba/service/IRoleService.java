@@ -15,4 +15,23 @@ public interface IRoleService<T> {
      * @param userId 用户id
      */
     List<T> getByUserId(String userId);
+
+    /**
+     * 添加角色
+     * @param param 角色参数
+     * @return
+     */
+    Optional<T> add(RoleParam param);
+
+    /**
+     * 更新角色
+     * @param param 角色参数
+     */
+    Optional<T>  update(RoleParam param);
+
+    /**
+     * 查看所有角色
+     * @return 角色列表
+     */
+    List<T> getAll();
 }

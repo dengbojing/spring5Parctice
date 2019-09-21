@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -50,8 +51,9 @@ public class Permission implements Serializable {
     @Column(name = "c_permission_name")
     private String permissionName;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
+    @Cascade({CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE,CascadeType.SAVE_UPDATE})
     @JoinTable(name="t_permission_menu",
             joinColumns={@JoinColumn(name="c_permission_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns={@JoinColumn(name="c_menu_id",referencedColumnName = "id", nullable = false)},
@@ -60,8 +62,9 @@ public class Permission implements Serializable {
     private List<Menu> menus;
 
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
+    @Cascade({CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE,CascadeType.SAVE_UPDATE})
     @JoinTable(name="t_permission_page",
             joinColumns={@JoinColumn(name="c_permission_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns={@JoinColumn(name="c_page_id",referencedColumnName = "id", nullable = false)},

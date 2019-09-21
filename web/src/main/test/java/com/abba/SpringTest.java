@@ -1,30 +1,19 @@
 package com.abba;
 
 
-import com.abba.config.HibernateConfig;
-import com.abba.config.RootConfig;
-import com.abba.config.ServletConfig;
 import com.abba.dao.ICompanyDao;
 import com.abba.model.po.Company;
 import com.abba.util.CSVReaderHelper;
 import com.abba.util.StringHelper;
-import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -100,9 +89,9 @@ public class SpringTest {
                         company.setFinancing(strings.get(6));
                         company.setIndividual(strings.get(7));
                         company.setStatus(strings.get(8));
-                        company.setDistrict(strings.get(9));
-                        company.setRegion(regionMap.get(strings.get(9).trim()));
-                        company.setCity(strings.get(10));
+                        /*company.setDistrictName(strings.get(9));
+                        company.setRegionName(regionMap.get(strings.get(9).trim()));
+                        company.setCityName(strings.get(10));*/
                         company.setIndustryType(StringHelper.split(file1.getName(),".").get(0));
                         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d");
                         String dateValue = strings.get(11);

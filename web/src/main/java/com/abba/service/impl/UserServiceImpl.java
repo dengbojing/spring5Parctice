@@ -83,7 +83,7 @@ public class UserServiceImpl implements IUserService<UserDTO> {
     @Override
     @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<UserDTO> page(){
-        return userDao.page(new Pager()).stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+        return userDao.page(new Pager<>()).getData().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
     }
 
     @Override

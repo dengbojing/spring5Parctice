@@ -4,6 +4,7 @@ import com.abba.util.ObjectHelper;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.IOException;
  * @author dengbojing
  * @param <T>
  */
+@Slf4j
 @NoArgsConstructor
 public abstract class AbstractVO<T extends AbstractDTO> {
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -24,8 +26,13 @@ public abstract class AbstractVO<T extends AbstractDTO> {
         }
     }
 
-    public AbstractVO fullCopy(T t) throws IOException {
-        return objectMapper.readValue(JSON.toJSONString(t),AbstractVO.class);
+    public <E extends AbstractVO> E fullCopy(T t,Class<E> c) {
+        try {
+            return objectMapper.readValue(JSON.toJSONString(t),c);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
 

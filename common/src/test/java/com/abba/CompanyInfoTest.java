@@ -1,6 +1,6 @@
 package com.abba;
 
-import com.abba.entity.GPS;
+import com.abba.entity.GPSEntity;
 import com.abba.util.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +108,7 @@ public class CompanyInfoTest {
 
                     double lon = Double.parseDouble(locationStr[0]);
                     double lat = Double.parseDouble(locationStr[1]);
-                    GPS gps = GPSConverterHelper.bd09_To_Gps84(lat, lon);
+                    GPSEntity gps = GPSConverterHelper.bd09_To_Gps84(lat, lon);
                     wgs84 = gps.getLon()+","+gps.getLat();
                 }
                 wgs84+="\n";

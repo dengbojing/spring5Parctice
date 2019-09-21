@@ -23,6 +23,8 @@ public class PageResponse<T extends AbstractVO> {
 
     private String message;
 
+    private Integer total;
+
     private List<T> data;
 
     private PageResponse(){}

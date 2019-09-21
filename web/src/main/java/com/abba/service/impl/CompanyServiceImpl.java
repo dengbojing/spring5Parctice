@@ -1,11 +1,15 @@
 package com.abba.service.impl;
 
 import com.abba.dao.ICompanyDao;
-import com.abba.entity.GPS;
+import com.abba.entity.GPSEntity;
 import com.abba.entity.request.Pager;
 import com.abba.model.po.Company;
 import com.abba.service.ICompanyService;
-import com.abba.util.*;
+import com.abba.util.CSVReaderHelper;
+import com.abba.util.ExcelReadHelper;
+import com.abba.util.GPSConverterHelper;
+import com.abba.util.GaodeMapHelper;
+import com.abba.util.StringHelper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -22,7 +26,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -138,9 +146,9 @@ public class CompanyServiceImpl implements ICompanyService<Company> {
                         company.setFinancing(strings.get(6));
                         company.setIndividual(strings.get(7));
                         company.setStatus(strings.get(8));
-                        company.setDistrict(strings.get(9));
-                        company.setRegion(regionMap.get(strings.get(9).trim()));
-                        company.setCity(strings.get(10));
+                        /*company.setDistrictName(strings.get(9));
+                        company.setRegionName(regionMap.get(strings.get(9).trim()));
+                        company.setCityName(strings.get(10));*/
                         company.setIndustryType(StringHelper.split(file1.getName(),".").get(0));
                         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d");
                         String dateValue = strings.get(11);
@@ -197,7 +205,7 @@ public class CompanyServiceImpl implements ICompanyService<Company> {
                 list.forEach(company -> {
                     String addressStr = company.getAddress();
                     try {
-                        String locationInfo = GaodeMapHelper.address2Location(addressStr,company.getCity());
+                        String locationInfo = GaodeMapHelper.address2Location(addressStr,company.getCity().getCityName());
                         JSONObject jsonObject = JSON.parseObject(locationInfo);
                         JSONArray jsonArray = jsonObject.getJSONArray("geocodes");
                         String locationStr = "";
@@ -208,7 +216,7 @@ public class CompanyServiceImpl implements ICompanyService<Company> {
                             List<String> locationList = StringHelper.split(locationStr, ",");
                             company.setGcjLat(Double.parseDouble(locationList.get(1)));
                             company.setGcjLon(Double.parseDouble(locationList.get(0)));
-                            GPS gps = GPSConverterHelper.gcj_To_Gps84(company.getGcjLat(), company.getGcjLon());
+                            GPSEntity gps = GPSConverterHelper.gcj_To_Gps84(company.getGcjLat(), company.getGcjLon());
                             company.setWgs84Lat(gps.getLat());
                             company.setWgs84Lon(gps.getLon());
                         }

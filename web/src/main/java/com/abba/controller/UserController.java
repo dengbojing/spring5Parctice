@@ -133,6 +133,7 @@ public class UserController {
      */
     @PostMapping("/update")
     public BaseResponse<UserVO> updateUser(@RequestBody UserParam param){
+        //FIXME
         Optional<UserDTO> optional = userService.updateExceptNull(param);
         return BaseResponse.<UserVO>builder().build().success("更新成功",new UserVO(optional.get()));
     }
